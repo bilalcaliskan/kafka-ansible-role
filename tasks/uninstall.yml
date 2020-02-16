@@ -1,0 +1,59 @@
+---
+
+- name: Get service facts
+  service_facts:
+
+- name: Check if Kafka is installed
+  set_fact:
+    kafka_installed: true
+  when: ansible_facts.services["kafka.service"] is defined
+
+- name: Remove Kafka
+  block:
+    - name: Ensure Kafka service stopped and disabled
+      service:
+        name: kafka
+        state: stopped
+        enabled: false
+
+    - name: Include destroy_storage.yml conditionally
+      include_tasks: destroy_storage.yml
+      when: (kafka_enable_persistency | bool)
+
+    - name: Revoke firewalld permissions
+      firewalld:
+        port: "{{ port }}/tcp"
+        immediate: true
+        permanent: true
+        state: disabled
+
+    - name: Remove kafka related directories and files
+      file:
+        path: "{{ item }}"
+        state: absent
+      loop:
+        - "{{ config_dir_path }}"
+        - "{{ data_dir_path }}"
+        - "{{ folder_path }}"
+        - "{{ file_path }}"
+        - "{{ systemd_service_file_path }}"
+
+    - name: Reload systemd
+      systemd:
+        daemon_reload: true
+
+    - name: Ensure {{ user }} user no more exists
+      user:
+        name: "{{ user }}"
+        state: absent
+
+    - name: Ensure {{ group }} group no more exists
+      group:
+        name: "{{ group }}"
+        state: absent
+  rescue:
+    - debug:
+        msg: "Got an error inside block, try to rerun tasks with -v option"
+  when: ansible_facts.services["kafka.service"] is defined
+
+...

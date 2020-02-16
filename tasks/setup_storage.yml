@@ -1,0 +1,37 @@
+---
+
+- name: Ensure correct partitions exist on device {{ kafka_device }}
+  parted:
+    device: "{{ kafka_device }}"
+    state: present
+    label: "{{ kafka_disk_label }}"
+    number: "{{ kafka_partition.number }}"
+    part_start: "{{ kafka_partition.start }}"
+    part_end: "{{ kafka_partition.end }}"
+
+- name: Ensure volume group exists
+  lvg:
+    vg: "{{ kafka_volume_group.name }}"
+    pvs: "{{ kafka_volume_group.device }}"
+
+- name: Create logical volume if needed
+  lvol:
+    vg: "{{ kafka_logical_volume.vgroup }}"
+    lv: "{{ kafka_logical_volume.name }}"
+    size: "{{ kafka_logical_volume.size }}"
+    force: true
+  when: kafka_logical_volume.name not in ansible_lvm["lvs"]
+
+- name: Ensure {{ kafka_filesystem_type | upper }} filesystem exist on logical volume
+  filesystem:
+    dev: "/dev/{{ kafka_volume_group.name }}/{{ kafka_logical_volume.name }}"
+    fstype: "{{ kafka_filesystem_type }}"
+
+- name: Ensure logical volume is mounted
+  mount:
+    path: "{{ kafka_logical_volume.mount_path }}"
+    src: "/dev/{{ kafka_volume_group.name }}/{{ kafka_logical_volume.name }}"
+    fstype: "{{ kafka_filesystem_type }}"
+    state: mounted
+
+...

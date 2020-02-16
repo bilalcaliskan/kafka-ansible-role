@@ -1,0 +1,114 @@
+---
+
+- name: Get service facts
+  service_facts:
+
+- name: Check if Kafka is installed
+  set_fact:
+    kafka_installed: false
+  when: ansible_facts.services["kafka.service"] is not defined
+
+- name: Install and configure Kafka
+  block:
+    - name: Install required packages
+      yum:
+        name: "{{ item }}"
+        state: present
+      loop: "{{ required_packages }}"
+
+    - name: Ensure {{ group }} group exists
+      group:
+        name: "{{ group }}"
+        state: present
+
+    - name: Ensure {{ user }} user exists
+      user:
+        name: "{{ user }}"
+        shell: /sbin/nologin
+        group: "{{ group }}"
+
+    - name: Download tar.gz file
+      get_url:
+        url: "{{ download_url }}"
+        dest: "{{ file_path }}"
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: 0644
+
+    - name: Extract tar.gz file
+      unarchive:
+        src: "{{ file_path }}"
+        dest: "{{ base_dir }}/"
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        remote_src: yes
+
+    - name: Create a symlink of unarchived directory
+      file:
+        src: "{{ folder_path }}"
+        dest: "{{ link_path }}"
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        state: link
+
+    - name: Create data directory
+      file:
+        path: "{{ data_dir_path }}"
+        state: directory
+        owner: "{{ user }}"
+        group: "{{ group }}"
+        mode: 0770
+
+    - name: Transfer template files to the remote location
+      template:
+        src: "{{ item.src_path }}"
+        dest: "{{ item.dest_path }}"
+        owner: "{{ item.user }}"
+        group: "{{ item.group }}"
+        mode: "{{ item.mode }}"
+      loop:
+        - { src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644  }
+        - { src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644  }
+
+    - name: Set kernel parameters for Kafka
+      sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: present
+        reload: yes
+      loop: "{{ required_kernel_parameters }}"
+
+    - name: Allow kafka ports
+      firewalld:
+        port: "{{ port }}/tcp"
+        permanent: true
+        immediate: true
+        state: enabled
+      changed_when: true
+      notify:
+        - Pause 5 seconds before running rest of kafka handlers
+        - Reload firewalld for kafka service
+        - Start and enable kafka service
+        - Create a symlink of kafka log directory
+
+    - name: Set fact kafka_installed
+      set_fact:
+        kafka_installed: true
+  rescue:
+    - debug:
+        msg: "Got an error inside block, try to rerun tasks with -v option"
+  when: ansible_facts.services["kafka.service"] is not defined
+
+- name: Include setup_storage.yml conditionally
+  include_tasks: setup_storage.yml
+  when: (kafka_enable_persistency | bool)
+
+- name: Recursively change ownership of unarchived directory
+  file:
+    path: "{{ folder_path }}"
+    state: directory
+    recurse: yes
+    owner: "{{ user }}"
+    group: "{{ group }}"
+
+...

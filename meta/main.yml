@@ -1,0 +1,24 @@
+galaxy_info:
+  author: bilalcaliskan
+  role_name: kafka
+  description: Kafka cluster setup
+  min_ansible_version: 2.6
+  galaxy_tags:
+    - configuration
+    - kafka
+  license: "license (BSD, MIT)"
+  platforms:
+    - name: EL
+      versions:
+        - 7
+        - 8
+
+dependencies:
+  - role: zookeeper
+    install: "{{ install_zookeeper }}"
+    mirror_url: "{{ zookeeper_mirror_url }}"
+    enable_persistency: "{{ zookeeper_enable_persistency }}"
+    device: "{{ zookeeper_device }}"
+    disk_label: "{{ zookeeper_disk_label }}"
+    filesystem_type: "{{ zookeeper_filesystem_type }}"
+

@@ -1,0 +1,28 @@
+{% set hosts = groups[hostvars[inventory_hostname].group_names[0]] -%}
+{% set current_host_index = hosts.index(inventory_hostname) -%}
+broker.id={{ current_host_index }}
+listeners=PLAINTEXT://0.0.0.0:{{ port }}
+advertised.listeners=PLAINTEXT://{{ inventory_hostname }}:{{ port }}
+num.network.threads={{ num_network_threads }}
+num.io.threads={{ num_io_threads }}
+socket.send.buffer.bytes={{ socket_send_buffer_bytes }}
+socket.receive.buffer.bytes={{ socket_receive_buffer_bytes }}
+socket.request.max.bytes={{ socket_request_max_bytes }}
+num.partitions={{ num_partitions }}
+num.recovery.threads.per.data.dir={{ num_recovery_threads_per_data_dir }}
+offsets.topic.replication.factor={{ offsets_topic_replication_factor }}
+transaction.state.log.replication.factor={{ transaction_state_log_replication_factor }}
+transaction.state.log.min.isr={{ transaction_state_log_min_isr }}
+default.replication.factor={{ default_replication_factor }}
+
+#LOG PART
+log.dirs={{ data_dir_path }}
+log.retention.hours={{ log_retention_hours }}
+log.segment.bytes={{ log_segment_bytes }}
+log.retention.check.interval.ms={{ log_retention_check_interval_ms }}
+log.cleaner.enable={{ log_cleaner_enable }}
+
+#ZOOKEPER PART
+zookeeper.connect={{ groups[hostvars[inventory_hostname].group_names[0]] | map('extract', hostvars, ['ansible_hostname']) | join(':2181,') }}:2181
+zookeeper.connection.timeout.ms={{ zookeeper_connection_timeout_ms }}
+group.initial.rebalance.delay.ms={{ zookeeper_initial_rebalance_delay_ms }}

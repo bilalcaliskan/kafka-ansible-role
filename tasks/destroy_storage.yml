@@ -1,0 +1,31 @@
+---
+
+- name: Ensure logical volume is unmounted
+  mount:
+    path: "{{ kafka_logical_volume.mount_path }}"
+    state: absent
+
+- name: Remove logical volume if needed
+  lvol:
+    vg: "{{ kafka_logical_volume.vgroup }}"
+    lv: "{{ kafka_logical_volume.name }}"
+    state: absent
+    force: true
+  when: kafka_logical_volume.name in ansible_lvm["lvs"]
+
+- name: Ensure volume group does not exist
+  lvg:
+    vg: "{{ kafka_volume_group.name }}"
+    state: absent
+
+- name: Ensure partitions on device {{ kafka_device }} does not exist anymore
+  parted:
+    device: "{{ kafka_device }}"
+    state: absent
+    number: "{{ kafka_partition.number }}"
+
+- name: Wipe existing disk labels on {{ kafka_device }}
+  command: "wipefs -a {{ kafka_device }}"
+  register: wipefs_result
+
+...

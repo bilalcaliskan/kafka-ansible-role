@@ -1,0 +1,82 @@
+---
+
+# Behavioral parameters
+install_kafka: true
+install_zookeeper: true
+
+# Installation specific parameters
+scala_version: 2.12
+kafka_version: 2.2.0
+user: kafka
+group: kafka
+kafka_mirror_url: https://archive.apache.org/dist
+zookeeper_mirror_url: https://apache.org/dist
+download_url: "{{ kafka_mirror_url }}/kafka/{{ kafka_version }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
+base_dir: /opt
+folder_path: "{{ base_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}"
+file_path: "{{ folder_path }}.tgz"
+link_path: "{{ base_dir }}/kafka"
+log_path: /var/log/kafka
+data_dir_path: "{{ link_path }}/kafka-logs"
+config_dir_path: "{{ link_path }}/config"
+binary_dir_path: "{{ link_path }}/bin"
+systemd_service_file_path: /usr/lib/systemd/system/kafka.service
+systemd_nofile_limit: 32768
+required_packages:
+  - java-1.8.0-openjdk
+required_kernel_parameters:
+  - key: fs.file-max
+    value: 32768
+
+# Kafka specific parameters
+port: 9092
+java_opts:
+  - key: KAFKA_HEAP_OPTS
+    value: "-Xmx1024M -Xms1024M"
+  - key: KAFKA_JVM_PERFORMANCE_OPTS
+    value: "-server -XX:+UseG1GC -XX:MaxGCPauseMillis=20 -XX:InitiatingHeapOccupancyPercent=35 -XX:+ExplicitGCInvokesConcurrent -Djava.awt.headless=true"
+num_partitions: 1
+num_recovery_threads_per_data_dir: 1
+offsets_topic_replication_factor: 3
+default_replication_factor: 3
+log_dirs: "{{ data_directory }}"
+log_retention_hours: 48
+log_segment_bytes: 1073741824
+log_retention_check_interval_ms: 300000
+log_cleaner_enable: true
+num_network_threads: 3
+num_io_threads: 8
+socket_send_buffer_bytes: 102400
+socket_receive_buffer_bytes: 102400
+socket_request_max_bytes: 104857600
+transaction_state_log_replication_factor: 3
+transaction_state_log_min_isr: 3
+zookeeper_connection_timeout_ms: 6000
+zookeeper_initial_rebalance_delay_ms: 3000
+
+# Persistency parameters for Kafka
+kafka_enable_persistency: false
+kafka_device: /dev/sdb
+kafka_disk_label: gpt
+kafka_filesystem_type: xfs
+kafka_partition:
+  number: 1
+  start: 1MiB
+  # Parted module can take values like 100%, 10GiB etc.
+  end: 100%
+kafka_volume_group:
+  name: kafka-vg
+  device: "{{ kafka_device }}{{ kafka_partition.number }}"
+kafka_logical_volume:
+  name: kafka-lv
+  vgroup: "{{ kafka_volume_group.name }}"
+  size: 99%FREE
+  mount_path: "{{ folder_path }}/kafka-logs"
+
+# Persistency parameters for Zookeeper
+zookeeper_enable_persistency: false
+zookeeper_device: /dev/sdc
+zookeeper_disk_label: gpt
+zookeeper_filesystem_type: xfs
+
+...
