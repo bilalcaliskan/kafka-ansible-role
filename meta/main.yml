@@ -21,4 +21,3 @@ dependencies:
     device: "{{ zookeeper_device }}"
     disk_label: "{{ zookeeper_disk_label }}"
     filesystem_type: "{{ zookeeper_filesystem_type }}"
-

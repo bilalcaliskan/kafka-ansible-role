@@ -67,8 +67,8 @@
         group: "{{ item.group }}"
         mode: "{{ item.mode }}"
       loop:
-        - { src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644  }
-        - { src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644  }
+        - { src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644 }
+        - { src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644 }
 
     - name: Set kernel parameters for Kafka
       sysctl:
