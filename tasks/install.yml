@@ -47,7 +47,7 @@
         dest: "{{ base_dir }}/"
         owner: "{{ user }}"
         group: "{{ group }}"
-        remote_src: yes
+        remote_src: true
 
     - name: Create a symlink of unarchived directory
       file:
@@ -73,16 +73,16 @@
         group: "{{ item.group }}"
         mode: "{{ item.mode }}"
       loop:
-        - { src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644 }
-        - { src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644 }
+        - {src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644}
+        - {src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644}
 
     - name: Set kernel parameters for Kafka
       sysctl:
         name: "{{ item.key }}"
         value: "{{ item.value }}"
         state: present
-        reload: yes
-      loop: "{{ required_kernel_parameters }}"
+        reload: true
+      loop: "{{ os_required_parameters }}"
 
     - name: Ensure firewalld is started and enabled
       service:

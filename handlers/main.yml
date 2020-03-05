@@ -4,8 +4,8 @@
   systemd:
     name: kafka
     state: started
-    enabled: yes
-    daemon_reload: yes
+    enabled: true
+    daemon_reload: true
 
 - name: Create a symlink of kafka log directory
   file:
@@ -14,6 +14,6 @@
     owner: "{{ user }}"
     group: "{{ group }}"
     state: link
-    force: yes
+    force: true
 
 ...

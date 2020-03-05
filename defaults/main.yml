@@ -28,9 +28,12 @@ required_packages:
   - setroubleshoot-server
   - selinux-policy-devel
   - tuned
-required_kernel_parameters:
-  - key: fs.file-max
-    value: 32768
+os_required_limits:
+  - key: LimitNOFILE
+    value: 65536
+os_required_parameters:
+  - key: net.core.somaxconn
+    value: 10240
 
 # Kafka specific parameters
 java_opts:

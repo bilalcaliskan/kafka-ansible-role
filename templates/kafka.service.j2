@@ -13,7 +13,9 @@ Restart=on-failure
 RestartSec=10s
 ExecStart={{ link_path }}/bin/kafka-server-start.sh {{ config_dir_path }}/server.properties
 ExecStop={{ link_path }}/bin/kafka-server-stop.sh
-LimitNOFILE={{ systemd_nofile_limit }}
+{% for item in os_required_limits %}
+{{ item.key }}={{ item.value }}
+{% endfor %}
 {% for item in java_opts %}
 Environment="{{ item.key }}={{ item.value }}"
 {% endfor %}
