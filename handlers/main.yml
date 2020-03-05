@@ -1,13 +1,13 @@
 ---
 
-- name: Start and enable kafka service
+- name: start and enable kafka service
   systemd:
     name: kafka
     state: started
     enabled: true
     daemon_reload: true
 
-- name: Create a symlink of kafka log directory
+- name: create a symlink of kafka log directory
   file:
     src: "{{ link_path }}/logs"
     dest: "{{ log_path }}"

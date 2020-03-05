@@ -1,5 +1,7 @@
 ## Kafka Ansible Role
 
+[![Build Status](https://travis-ci.org/bilalcaliskan/kafka-ansible-role.svg?branch=master)](https://travis-ci.org/bilalcaliskan/kafka-ansible-role)
+
 Installs and configures Kafka cluster on RHEL/CentOS 7/8 servers.
 
 ## Requirements

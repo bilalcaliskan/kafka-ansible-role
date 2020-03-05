@@ -96,15 +96,15 @@
         permanent: true
         immediate: true
         state: enabled
-      changed_when: true
       ignore_errors: true
-      notify:
-        - Start and enable kafka service
-        - Create a symlink of kafka log directory
 
     - name: Set fact kafka_installed
       set_fact:
         kafka_installed: true
+      changed_when: true
+      notify:
+        - start and enable kafka service
+        - create a symlink of kafka log directory
   rescue:
     - name: Fail and print message
       fail:
