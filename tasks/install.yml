@@ -97,6 +97,7 @@
         immediate: true
         state: enabled
       changed_when: true
+      ignore_errors: true
       notify:
         - Start and enable kafka service
         - Create a symlink of kafka log directory
