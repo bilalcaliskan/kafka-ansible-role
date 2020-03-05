@@ -98,6 +98,18 @@
         state: enabled
       ignore_errors: true
 
+    - name: Include setup_storage.yml conditionally
+      include_tasks: setup_storage.yml
+      when: (kafka_enable_persistency | bool)
+
+    - name: Recursively change ownership of unarchived directory
+      file:
+        path: "{{ folder_path }}"
+        state: directory
+        recurse: true
+        owner: "{{ user }}"
+        group: "{{ group }}"
+
     - name: Set fact kafka_installed
       set_fact:
         kafka_installed: true
@@ -110,17 +122,5 @@
       fail:
         msg: "Got an error inside block, try to rerun tasks with -v option"
   when: ansible_facts.services["kafka.service"] is not defined
-
-- name: Include setup_storage.yml conditionally
-  include_tasks: setup_storage.yml
-  when: (kafka_enable_persistency | bool)
-
-- name: Recursively change ownership of unarchived directory
-  file:
-    path: "{{ folder_path }}"
-    state: directory
-    recurse: true
-    owner: "{{ user }}"
-    group: "{{ group }}"
 
 ...
