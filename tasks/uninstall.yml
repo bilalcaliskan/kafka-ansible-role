@@ -51,7 +51,8 @@
         name: "{{ group }}"
         state: absent
   rescue:
-    - fail:
+    - name: Fail and print message
+      fail:
         msg: "Got an error inside block, try to rerun tasks with -v option"
   when: ansible_facts.services["kafka.service"] is defined
 
