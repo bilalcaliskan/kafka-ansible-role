@@ -107,7 +107,7 @@
   file:
     path: "{{ folder_path }}"
     state: directory
-    recurse: yes
+    recurse: true
     owner: "{{ user }}"
     group: "{{ group }}"
 

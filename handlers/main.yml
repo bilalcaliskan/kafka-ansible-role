@@ -1,12 +1,5 @@
 ---
 
-- name: Pause 5 seconds before running rest of kafka handlers
-  pause:
-    seconds: 5
-
-- name: Reload firewalld for kafka service
-  command: firewall-cmd --reload
-
 - name: Start and enable kafka service
   systemd:
     name: kafka
@@ -22,3 +15,5 @@
     group: "{{ group }}"
     state: link
     force: yes
+
+...
