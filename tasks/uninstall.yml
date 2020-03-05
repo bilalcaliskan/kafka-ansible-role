@@ -22,7 +22,7 @@
 
     - name: Revoke firewalld permissions
       firewalld:
-        port: "{{ port }}/tcp"
+        port: 9092/tcp
         immediate: true
         permanent: true
         state: disabled
@@ -35,7 +35,6 @@
         - "{{ config_dir_path }}"
         - "{{ data_dir_path }}"
         - "{{ folder_path }}"
-        - "{{ file_path }}"
         - "{{ systemd_service_file_path }}"
 
     - name: Reload systemd
@@ -52,7 +51,7 @@
         name: "{{ group }}"
         state: absent
   rescue:
-    - debug:
+    - fail:
         msg: "Got an error inside block, try to rerun tasks with -v option"
   when: ansible_facts.services["kafka.service"] is defined
 

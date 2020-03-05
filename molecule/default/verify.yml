@@ -3,13 +3,10 @@
 - name: Verify ports are reachable
   hosts: all
   tasks:
-    - name: Ensure kafka and zookeeper ports are reachable
+    - name: Ensure kafka port is reachable
       wait_for:
         host: localhost
-        port: "{{ item }}"
+        port: 9092
         timeout: 3
-      loop:
-        - 9092
-        - 2181
-
+        
 ...

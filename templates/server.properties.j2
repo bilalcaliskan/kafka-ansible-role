@@ -1,8 +1,8 @@
 {% set hosts = groups[hostvars[inventory_hostname].group_names[0]] -%}
 {% set current_host_index = hosts.index(inventory_hostname) -%}
 broker.id={{ current_host_index }}
-listeners=PLAINTEXT://0.0.0.0:{{ port }}
-advertised.listeners=PLAINTEXT://{{ inventory_hostname }}:{{ port }}
+listeners=PLAINTEXT://0.0.0.0:9092
+advertised.listeners=PLAINTEXT://{{ inventory_hostname }}:9092
 num.network.threads={{ num_network_threads }}
 num.io.threads={{ num_io_threads }}
 socket.send.buffer.bytes={{ socket_send_buffer_bytes }}

@@ -10,7 +10,7 @@ kafka_version: 2.2.0
 user: kafka
 group: kafka
 kafka_mirror_url: https://archive.apache.org/dist
-zookeeper_mirror_url: https://apache.org/dist
+zookeeper_mirror_url: https://archive.apache.org/dist
 download_url: "{{ kafka_mirror_url }}/kafka/{{ kafka_version }}/kafka_{{ scala_version }}-{{ kafka_version }}.tgz"
 base_dir: /opt
 folder_path: "{{ base_dir }}/kafka_{{ scala_version }}-{{ kafka_version }}"
@@ -24,12 +24,15 @@ systemd_service_file_path: /usr/lib/systemd/system/kafka.service
 systemd_nofile_limit: 32768
 required_packages:
   - java-1.8.0-openjdk
+  - firewalld
+  - setroubleshoot-server
+  - selinux-policy-devel
+  - tuned
 required_kernel_parameters:
   - key: fs.file-max
     value: 32768
 
 # Kafka specific parameters
-port: 9092
 java_opts:
   - key: KAFKA_HEAP_OPTS
     value: "-Xmx1024M -Xms1024M"
