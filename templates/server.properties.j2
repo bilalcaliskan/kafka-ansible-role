@@ -10,6 +10,18 @@ socket.receive.buffer.bytes={{ socket_receive_buffer_bytes }}
 socket.request.max.bytes={{ socket_request_max_bytes }}
 num.partitions={{ num_partitions }}
 num.recovery.threads.per.data.dir={{ num_recovery_threads_per_data_dir }}
+{% if offsets_topic_replication_factor > (ansible_play_hosts | length) %}
+{% set offsets_topic_replication_factor = (ansible_play_hosts | length) -%}
+{% endif %}
+{% if transaction_state_log_replication_factor > (ansible_play_hosts | length) %}
+{% set transaction_state_log_replication_factor = (ansible_play_hosts | length) -%}
+{% endif %}
+{% if default_replication_factor > (ansible_play_hosts | length) %}
+{% set default_replication_factor = (ansible_play_hosts | length) -%}
+{% endif %}
+{% if transaction_state_log_min_isr > (ansible_play_hosts | length) %}
+{% set transaction_state_log_min_isr = (ansible_play_hosts | length) -%}
+{% endif %}
 offsets.topic.replication.factor={{ offsets_topic_replication_factor }}
 transaction.state.log.replication.factor={{ transaction_state_log_replication_factor }}
 transaction.state.log.min.isr={{ transaction_state_log_min_isr }}
@@ -23,6 +35,10 @@ log.retention.check.interval.ms={{ log_retention_check_interval_ms }}
 log.cleaner.enable={{ log_cleaner_enable }}
 
 #ZOOKEPER PART
+{% if ansible_play_hosts | length == 1 %}
+zookeeper.connect={{ inventory_hostname }}:2181
+{% elif ansible_play_hosts | length > 1 %}
 zookeeper.connect={{ groups[hostvars[inventory_hostname].group_names[0]] | map('extract', hostvars, ['ansible_hostname']) | join(':2181,') }}:2181
+{% endif %}
 zookeeper.connection.timeout.ms={{ zookeeper_connection_timeout_ms }}
 group.initial.rebalance.delay.ms={{ zookeeper_initial_rebalance_delay_ms }}
