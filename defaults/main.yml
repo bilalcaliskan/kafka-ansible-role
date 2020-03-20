@@ -34,6 +34,13 @@ os_required_limits:
 os_required_parameters:
   - key: net.core.somaxconn
     value: 10240
+  # https://medium.com/@pawilon/tuning-your-linux-kernel-and-haproxy-instance-for-high-loads-1a2105ea553e
+  - key: net.core.somaxconn
+    value: 10240
+  - key: net.ipv4.tcp_max_syn_backlog
+    value: 10240
+  - key: net.core.netdev_max_backlog
+    value: 10240
 
 # Kafka specific parameters
 java_opts:
