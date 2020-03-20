@@ -52,6 +52,7 @@ offsets_topic_replication_factor: 3
 default_replication_factor: 3
 log_dirs: "{{ data_directory }}"
 log_retention_hours: 48
+log_retention_bytes: 1073741824
 log_segment_bytes: 1073741824
 log_retention_check_interval_ms: 300000
 log_cleaner_enable: true
