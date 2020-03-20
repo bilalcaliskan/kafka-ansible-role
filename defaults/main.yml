@@ -32,8 +32,6 @@ os_required_limits:
   - key: LimitNOFILE
     value: 65536
 os_required_parameters:
-  - key: net.core.somaxconn
-    value: 10240
   # https://medium.com/@pawilon/tuning-your-linux-kernel-and-haproxy-instance-for-high-loads-1a2105ea553e
   - key: net.core.somaxconn
     value: 10240
