@@ -108,7 +108,6 @@
     permanent: true
     immediate: true
     state: enabled
-  ignore_errors: true
 
 - name: Set fact after installation
   set_fact:
