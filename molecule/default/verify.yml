@@ -1,12 +1,12 @@
 ---
 
-- name: Verify ports are reachable
+- name: Verify play
   hosts: all
   tasks:
     - name: Ensure kafka port is reachable
       wait_for:
         host: localhost
         port: 9092
-        timeout: 3
+        timeout: 5
 
 ...

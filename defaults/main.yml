@@ -1,10 +1,10 @@
 ---
 
-# Behavioral parameters
+############# Behavioral Parameters #############
 install_kafka: true
 install_zookeeper: true
 
-# Installation specific parameters
+############# Installation Specific Parameters #############
 scala_version: 2.12
 kafka_version: 2.2.0
 user: kafka
@@ -22,6 +22,8 @@ config_dir_path: "{{ link_path }}/config"
 binary_dir_path: "{{ link_path }}/bin"
 systemd_service_file_path: /usr/lib/systemd/system/kafka.service
 systemd_nofile_limit: 32768
+
+############# OS Specific Parameters #############
 required_packages:
   - java-1.8.0-openjdk
   - firewalld
@@ -40,7 +42,7 @@ os_required_parameters:
   - key: net.core.netdev_max_backlog
     value: 10240
 
-# Kafka specific parameters
+############# Kafka Parameters #############
 java_opts:
   - key: KAFKA_HEAP_OPTS
     value: "-Xmx1024M -Xms1024M"
@@ -66,7 +68,7 @@ transaction_state_log_min_isr: 3
 zookeeper_connection_timeout_ms: 6000
 zookeeper_initial_rebalance_delay_ms: 3000
 
-# Persistency parameters for Kafka
+############# Persistency Parameters For Kafka #############
 kafka_enable_persistency: false
 kafka_device: /dev/sdb
 kafka_disk_label: gpt
@@ -85,7 +87,7 @@ kafka_logical_volume:
   size: 99%FREE
   mount_path: "{{ folder_path }}/kafka-logs"
 
-# Persistency parameters for Zookeeper
+############# Persistency Parameters For Zookeeper #############
 zookeeper_enable_persistency: false
 zookeeper_device: /dev/sdc
 zookeeper_disk_label: gpt

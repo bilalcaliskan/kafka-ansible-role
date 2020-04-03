@@ -16,16 +16,16 @@
         state: stopped
         enabled: false
 
-    - name: Include destroy_storage.yml conditionally
-      include_tasks: destroy_storage.yml
-      when: (kafka_enable_persistency | bool)
-
     - name: Revoke firewalld permissions
       firewalld:
         port: 9092/tcp
         immediate: true
         permanent: true
         state: disabled
+
+    - name: Include destroy_storage.yml conditionally
+      include_tasks: destroy_storage.yml
+      when: (kafka_enable_persistency | bool)
 
     - name: Remove kafka related directories and files
       file:
@@ -35,11 +35,9 @@
         - "{{ config_dir_path }}"
         - "{{ data_dir_path }}"
         - "{{ folder_path }}"
+        - "{{ log_path }}"
         - "{{ systemd_service_file_path }}"
-
-    - name: Reload systemd
-      systemd:
-        daemon_reload: true
+      notify: force systemd to reread configs
 
     - name: Ensure {{ user }} user no more exists
       user:
