@@ -100,6 +100,7 @@
     name: firewalld
     state: started
     enabled: true
+  changed_when: false
 
 - name: Allow kafka port
   firewalld:
@@ -109,13 +110,13 @@
     state: enabled
   ignore_errors: true
 
-#- name: Recursively change ownership of unarchived directory
-#  file:
-#    path: "{{ folder_path }}"
-#    state: directory
-#    recurse: true
-#    owner: "{{ user }}"
-#    group: "{{ group }}"
+- name: Recursively change ownership of unarchived directory
+  file:
+    path: "{{ folder_path }}"
+    state: directory
+    recurse: true
+    owner: "{{ user }}"
+    group: "{{ group }}"
 
 - name: Set fact after installation
   set_fact:

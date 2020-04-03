@@ -41,6 +41,9 @@ os_required_parameters:
     value: 10240
   - key: net.core.netdev_max_backlog
     value: 10240
+# Usually, swapping is not a good idea in Zookeeper and Kafka
+# https://stackoverflow.com/questions/33463803/why-swapping-is-not-a-good-idea-in-zookeeper-and-kafka
+kafka_swap_enabled: false
 
 ############# Kafka Parameters #############
 java_opts:
@@ -87,10 +90,13 @@ kafka_logical_volume:
   size: 99%FREE
   mount_path: "{{ folder_path }}/kafka-logs"
 
-############# Persistency Parameters For Zookeeper #############
+############# Zookeeper Specific Parameters #############
 zookeeper_enable_persistency: false
 zookeeper_device: /dev/sdc
 zookeeper_disk_label: gpt
 zookeeper_filesystem_type: xfs
+# Usually, swapping is not a good idea in Zookeeper and Kafka
+# https://stackoverflow.com/questions/33463803/why-swapping-is-not-a-good-idea-in-zookeeper-and-kafka
+zookeeper_swap_enabled: false
 
 ...
