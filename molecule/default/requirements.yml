@@ -1,5 +1,6 @@
 ---
 
-- src: bilalcaliskan.zookeeper
+# Get role from galaxy
+- name: bilalcaliskan.zookeeper
 
 ...
