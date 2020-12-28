@@ -5,8 +5,8 @@ install_kafka: true
 install_zookeeper: true
 
 ############# Installation Specific Parameters #############
-scala_version: 2.12
-kafka_version: 2.2.0
+scala_version: 2.13
+kafka_version: 2.7.0
 user: kafka
 group: kafka
 kafka_mirror_url: https://archive.apache.org/dist
