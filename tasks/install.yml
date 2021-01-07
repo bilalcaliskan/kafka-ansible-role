@@ -96,6 +96,12 @@
     reload: true
   loop: "{{ os_required_parameters }}"
 
+- name: Stop firewalld if desired by user
+  service:
+    name: firewalld
+    state: stopped
+    enabled: false
+  when: not (firewalld_enabled | bool)
 
 - name: Firewalld related block
   block:
@@ -112,7 +118,7 @@
       permanent: true
       immediate: true
       state: enabled
-  when: (start_firewalld | bool)
+  when: (firewalld_enabled | bool)
 
 - name: Set fact after installation
   set_fact:
