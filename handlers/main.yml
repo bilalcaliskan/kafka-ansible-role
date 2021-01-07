@@ -1,5 +1,9 @@
 ---
 
+- name: force systemd to reread configs
+  systemd:
+    daemon_reload: true
+
 - name: start and enable kafka service
   systemd:
     name: kafka
@@ -15,7 +19,3 @@
     group: "{{ group }}"
     state: link
     force: true
-
-- name: force systemd to reread configs
-  systemd:
-    daemon_reload: true
