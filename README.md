@@ -11,7 +11,7 @@ This installation requires Zookeeper; also note that this role requires root acc
     - hosts: all
       become: yes
       roles:
-        - role: kafka
+        - role: bilalcaliskan.kafka
           vars:
             empty_var: true
 
@@ -38,7 +38,7 @@ See the default values in [defaults/main.yml](defaults/main.yml). You can overwr
     - hosts: all
       become: yes
       roles:
-        - role: kafka
+        - role: bilalcaliskan.kafka
           vars:
             install_kafka: true
             install_zookeeper: true
@@ -53,7 +53,7 @@ See the default values in [defaults/main.yml](defaults/main.yml). You can overwr
     - hosts: all
       become: yes
       roles:
-        - role: kafka
+        - role: bilalcaliskan.kafka
           vars:
             install_kafka: false
             install_zookeeper: false
