@@ -22,6 +22,7 @@
         immediate: true
         permanent: true
         state: disabled
+      when: (start_firewalld | bool)
 
     - name: Include destroy_storage.yml conditionally
       include_tasks: destroy_storage.yml
@@ -53,5 +54,3 @@
       fail:
         msg: "Got an error inside block, try to rerun tasks with -v option"
   when: ansible_facts.services["kafka.service"] is defined
-
-...

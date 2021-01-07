@@ -84,6 +84,7 @@
     - {src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644}
     - {src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644}
   notify:
+    - force systemd to reread configs
     - start and enable kafka service
     - create a symlink of kafka log directory
 
@@ -95,23 +96,25 @@
     reload: true
   loop: "{{ os_required_parameters }}"
 
-- name: Ensure firewalld is started and enabled
-  service:
-    name: firewalld
-    state: started
-    enabled: true
-  changed_when: false
 
-- name: Allow kafka port
-  firewalld:
-    port: 9092/tcp
-    permanent: true
-    immediate: true
-    state: enabled
+- name: Firewalld related block
+  block:
+  - name: Ensure firewalld is started and enabled
+    service:
+      name: firewalld
+      state: started
+      enabled: true
+    changed_when: false
+
+  - name: Allow kafka port
+    firewalld:
+      port: 9092/tcp
+      permanent: true
+      immediate: true
+      state: enabled
+  when: (start_firewalld | bool)
 
 - name: Set fact after installation
   set_fact:
     kafka_installed: true
   when: ansible_facts.services["kafka.service"] is defined
-
-...

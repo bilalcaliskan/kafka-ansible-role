@@ -3,6 +3,8 @@
 ############# Behavioral Parameters #############
 install_kafka: true
 install_zookeeper: true
+start_firewalld: true
+
 
 ############# Installation Specific Parameters #############
 scala_version: 2.13
@@ -22,6 +24,7 @@ config_dir_path: "{{ link_path }}/config"
 binary_dir_path: "{{ link_path }}/bin"
 systemd_service_file_path: /usr/lib/systemd/system/kafka.service
 systemd_nofile_limit: 32768
+
 
 ############# OS Specific Parameters #############
 required_packages:
@@ -44,6 +47,7 @@ os_required_parameters:
 # Usually, swapping is not a good idea in Zookeeper and Kafka
 # https://stackoverflow.com/questions/33463803/why-swapping-is-not-a-good-idea-in-zookeeper-and-kafka
 kafka_swap_enabled: false
+
 
 ############# Kafka Parameters #############
 java_opts:
@@ -71,6 +75,7 @@ transaction_state_log_min_isr: 3
 zookeeper_connection_timeout_ms: 6000
 zookeeper_initial_rebalance_delay_ms: 3000
 
+
 ############# Persistency Parameters For Kafka #############
 kafka_enable_persistency: false
 kafka_device: /dev/sdb
@@ -90,6 +95,7 @@ kafka_logical_volume:
   size: 99%FREE
   mount_path: "{{ folder_path }}/kafka-logs"
 
+
 ############# Zookeeper Specific Parameters #############
 zookeeper_enable_persistency: false
 zookeeper_device: /dev/sdc
@@ -98,5 +104,3 @@ zookeeper_filesystem_type: xfs
 # Usually, swapping is not a good idea in Zookeeper and Kafka
 # https://stackoverflow.com/questions/33463803/why-swapping-is-not-a-good-idea-in-zookeeper-and-kafka
 zookeeper_swap_enabled: false
-
-...
