@@ -17,7 +17,7 @@ This installation requires Zookeeper; also note that this role requires root acc
 
 ### Role Variables
 
-See the default values in 'defaults/main.yml'. You can overwrite them in 'vars/main.yml' if neccessary.
+See the default values in [defaults/main.yml](defaults/main.yml). You can overwrite them in [vars/main.yml](vars/main.yml) if neccessary.
 
 > Please note that this role will ensure that `firewalld` systemd service on your servers are started and enabled. If your `firewalld` services are stopped and disabled, please modify below variable as false when running playbook:  
 > start_firewalld: false
@@ -44,7 +44,7 @@ See the default values in 'defaults/main.yml'. You can overwrite them in 'vars/m
             install_zookeeper: true
             kafka_version: 123.123
 
-* Inside `vars/main.yml`*:
+* Inside [vars/main.yml](vars/main.yml)*:
 
     kafka_version: 123.123
 
