@@ -40,6 +40,14 @@
         - "{{ systemd_service_file_path }}"
       notify: force systemd to reread configs
 
+    - name: Revert kernel parameters
+      sysctl:
+        name: "{{ item.key }}"
+        value: "{{ item.value }}"
+        state: absent
+        reload: true
+      loop: "{{ os_required_parameters }}"
+
     - name: Ensure {{ user }} user no more exists
       user:
         name: "{{ user }}"
