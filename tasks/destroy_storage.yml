@@ -29,5 +29,3 @@
   command: "wipefs -a {{ kafka_device }}"
   register: wipefs_result
   when: check_partition_result is succeeded
-
-...

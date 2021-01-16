@@ -1,6 +1,6 @@
 ## Kafka Ansible Role
 
-[![Build Status](https://travis-ci.org/bilalcaliskan/kafka-ansible-role.svg?branch=master)](https://travis-ci.org/bilalcaliskan/kafka-ansible-role)
+[![CI](https://github.com/bilalcaliskan/kafka-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/kafka-ansible-role/actions?query=workflow%3ACI)
 
 Installs and configures Kafka cluster on RHEL/CentOS 7/8 servers.
 

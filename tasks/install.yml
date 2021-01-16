@@ -105,19 +105,19 @@
 
 - name: Firewalld related block
   block:
-  - name: Ensure firewalld is started and enabled
-    service:
-      name: firewalld
-      state: started
-      enabled: true
-    changed_when: false
+    - name: Ensure firewalld is started and enabled
+      service:
+        name: firewalld
+        state: started
+        enabled: true
+      changed_when: false
 
-  - name: Allow kafka port
-    firewalld:
-      port: 9092/tcp
-      permanent: true
-      immediate: true
-      state: enabled
+    - name: Allow kafka port
+      firewalld:
+        port: 9092/tcp
+        permanent: true
+        immediate: true
+        state: enabled
   when: (firewalld_enabled | bool)
 
 - name: Set fact after installation

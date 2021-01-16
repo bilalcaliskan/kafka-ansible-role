@@ -33,5 +33,3 @@
     src: "/dev/{{ kafka_volume_group.name }}/{{ kafka_logical_volume.name }}"
     fstype: "{{ kafka_filesystem_type }}"
     state: mounted
-
-...
