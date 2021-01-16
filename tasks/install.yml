@@ -67,7 +67,7 @@
     state: directory
     owner: "{{ user }}"
     group: "{{ group }}"
-    mode: 0770
+    mode: 0755
 
 - name: Include setup_storage.yml conditionally
   include_tasks: setup_storage.yml
@@ -81,8 +81,8 @@
     group: "{{ item.group }}"
     mode: "{{ item.mode }}"
   loop:
-    - {src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 0644}
-    - {src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 0644}
+    - {src_path: server.properties.j2, dest_path: "{{ config_dir_path }}/server.properties", user: "{{ user }}", group: "{{ group }}", mode: 640}
+    - {src_path: kafka.service.j2, dest_path: "{{ systemd_service_file_path }}", user: root, group: root, mode: 640}
   notify:
     - force systemd to reread configs
     - start and enable kafka service
