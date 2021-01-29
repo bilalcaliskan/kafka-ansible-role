@@ -58,7 +58,7 @@ Inside [vars/main.yml](vars/main.yml)*:
 kafka_version: 123.123
 ```
 
-### Example Playbook File For `Ununinstallation`
+### Example Playbook File For Uninstallation
 
 ```yaml
 - hosts: all
