@@ -22,7 +22,6 @@ log_path: /var/log/kafka
 data_dir_path: "{{ link_path }}/kafka-logs"
 config_dir_path: "{{ link_path }}/config"
 binary_dir_path: "{{ link_path }}/bin"
-systemd_service_file_path: /usr/lib/systemd/system/kafka.service
 systemd_nofile_limit: 32768
 
 

@@ -1,0 +1,3 @@
+---
+
+systemd_service_file_path: /lib/systemd/system/kafka.service

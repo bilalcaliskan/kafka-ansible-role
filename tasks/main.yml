@@ -1,5 +1,8 @@
 ---
 
+- name: Include OS specific variables.
+  include_vars: "{{ ansible_os_family | lower }}.yml"
+
 - name: Include install.yml file conditionally
   include_tasks: install.yml
   when: (install_kafka | bool)
