@@ -8,6 +8,11 @@
     kafka_installed: false
   when: ansible_facts.services["kafka.service"] is not defined
 
+- name: Update cache on Debian based hosts
+  apt:
+    update_cache: true
+  when: ansible_facts['os_family'] == "Debian"
+
 - name: Install required packages
   yum:
     name: "{{ item }}"

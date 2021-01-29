@@ -26,12 +26,6 @@ systemd_nofile_limit: 32768
 
 
 ############# OS Specific Parameters #############
-required_packages:
-  - java-1.8.0-openjdk
-  - firewalld
-  - setroubleshoot-server
-  - selinux-policy-devel
-  - tuned
 os_required_limits:
   - key: LimitNOFILE
     value: 65536

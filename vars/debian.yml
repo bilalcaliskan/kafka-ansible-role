@@ -1,3 +1,6 @@
 ---
 
 systemd_service_file_path: /lib/systemd/system/kafka.service
+required_packages:
+  - openjdk-8-jdk
+  - firewalld

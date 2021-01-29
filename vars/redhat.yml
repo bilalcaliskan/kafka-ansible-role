@@ -1,3 +1,9 @@
 ---
 
 systemd_service_file_path: /usr/lib/systemd/system/kafka.service
+required_packages:
+  - java-1.8.0-openjdk
+  - firewalld
+  - setroubleshoot-server
+  - selinux-policy-devel
+  - tuned
