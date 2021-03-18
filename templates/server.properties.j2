@@ -35,11 +35,22 @@ log.segment.bytes={{ log_segment_bytes }}
 log.retention.check.interval.ms={{ log_retention_check_interval_ms }}
 log.cleaner.enable={{ log_cleaner_enable }}
 
+
 #ZOOKEPER PART
+{% if seperate_zookeepers %}
+
+{% if zookeepers | length == 1 %}
+zookeeper.connect={{ zookeepers[0] }}:2181
+{% elif zookeepers | length > 1 %}
+zookeeper.connect={{ zookeepers | join(':2181,') }}:2181
+{% else %}
 {% if ansible_play_hosts | length == 1 %}
 zookeeper.connect={{ inventory_hostname }}:2181
 {% elif ansible_play_hosts | length > 1 %}
 zookeeper.connect={{ groups[hostvars[inventory_hostname].group_names[0]] | map('extract', hostvars, ['ansible_hostname']) | join(':2181,') }}:2181
+{% endif %}
+
+{% endif %}
 {% endif %}
 zookeeper.connection.timeout.ms={{ zookeeper_connection_timeout_ms }}
 group.initial.rebalance.delay.ms={{ zookeeper_initial_rebalance_delay_ms }}

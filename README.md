@@ -3,7 +3,13 @@
 
 [![CI](https://github.com/bilalcaliskan/kafka-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/kafka-ansible-role/actions?query=workflow%3ACI)
 
-Installs and configures Kafka cluster on RHEL/CentOS 7/8 servers.
+Installs and configures Kafka cluster. By default, this role sets up zookeeper and kafka on the same server. But you can change this behavior by setting below variables while running the playbook. Check the `Examples` section for ready to use examples.
+
+```
+seperate_zookeepers: true
+zookeepers: 
+  - zookeepernode01
+```
 
 ### Requirements
 
@@ -37,43 +43,129 @@ Also please see the Redhat ansible_os_family specific variables in [vars/redhat.
 
 That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcaliskan/zookeeper) role
 
-### Example Inventory File
 
+### Examples
+#### Seperate Zookeeper, Seperate Kafka Installation
+
+*inventory.ini:*
 ```
-[kafka]
-broker01.example.com
-broker02.example.com
-broker03.example.com
+[zookeepers]
+  zookeepernode01
+
+[brokers]
+  brokernode02
 ```
 
-### Example Playbook File For Installation
-
+*playbook.yaml:*
 ```yaml
-- hosts: all
+---
+
+- name: Zookeeper role execution play
+  hosts: zookeepers
+  become: true
+  roles:
+    - role: bilalcaliskan.zookeeper
+      vars:
+        install: true
+
+- name: Kafka role execution play
+  hosts: brokers
   become: true
   roles:
     - role: bilalcaliskan.kafka
       vars:
         install_kafka: true
-        install_zookeeper: true
-        kafka_version: 123.123
+        install_zookeeper: false
+        seperate_zookeepers: true
+        zookeepers: 
+          - zookeepernode01
+
 ```
 
-Inside [vars/main.yml](vars/main.yml)*:
-```yaml
-kafka_version: 123.123
+#### Seperate Zookeeper, Seperate Kafka Uninstallation
+*inventory.ini:*
+```
+[zookeepers]
+  zookeepernode01
+
+[brokers]
+  brokernode02
 ```
 
-### Example Playbook File For Uninstallation
-
+*playbook.yaml:*
 ```yaml
-- hosts: all
+---
+
+- name: Zookeeper role execution play
+  hosts: zookeepers
+  become: true
+  roles:
+    - role: bilalcaliskan.zookeeper
+      vars:
+        install: false
+
+- name: Kafka role execution play
+  hosts: brokers
   become: true
   roles:
     - role: bilalcaliskan.kafka
       vars:
         install_kafka: false
         install_zookeeper: false
+        seperate_zookeepers: true
+        zookeepers: 
+          - zookeepernode01
+
+```
+
+#### Kafka + Zookeeper on the same server installation
+
+*inventory.ini:*
+```
+[brokers]
+  brokernode01
+  brokernode02
+  brokernode03
+```
+
+*playbook.yaml:*
+```yaml
+---
+
+- name: Kafka role execution play
+  hosts: brokers
+  become: true
+  roles:
+    - role: bilalcaliskan.kafka
+      vars:
+        install_kafka: true
+        install_zookeeper: true
+        seperate_zookeepers: false
+```
+
+#### Kafka + Zookeeper on the same server uninstallation
+
+*inventory.ini:*
+```
+[brokers]
+  brokernode01
+  brokernode02
+  brokernode03
+```
+
+*playbook.yaml:*
+```yaml
+---
+
+- name: Kafka role execution play
+  hosts: brokers
+  become: true
+  roles:
+    - role: bilalcaliskan.kafka
+      vars:
+        install_kafka: false
+        install_zookeeper: false
+        seperate_zookeepers: false
 ```
 
 ### License
