@@ -1,53 +1,45 @@
-## Kafka Ansible Role
-
+# Kafka Ansible Role
 
 [![CI](https://github.com/bilalcaliskan/kafka-ansible-role/workflows/CI/badge.svg?event=push)](https://github.com/bilalcaliskan/kafka-ansible-role/actions?query=workflow%3ACI)
 
-Installs and configures Kafka cluster. By default, this role sets up zookeeper and kafka on the same server. But you can change this behavior by setting below variables while running the playbook. Check the `Examples` section for ready to use examples.
+Installs and configures [Apache Kafka](https://kafka.apache.org/) on Redhat/Debian based hosts.
+
+By default, this role sets up [Apache Zookeeper](https://zookeeper.apache.org/) and [Apache Kafka](https://kafka.apache.org/) on the same server. But you can change this behavior by setting below variables while running the playbook. Check the **Examples** section for ready to use examples.
 
 ```
 seperate_zookeepers: true
-zookeepers: 
+zookeepers:
   - zookeepernode01
 ```
 
-### Requirements
+## Requirements
 
 This role requires minimum Ansible version 2.4 and maximum Ansible version 2.9. You can install suggested version with pip:
 ```
 $ pip install "ansible==2.9.16"
 ```
 
-This installation requires Zookeeper; also note that this role requires root access, so either run it in a playbook with a global `become: true`, or invoke the role in your playbook. Here is the example with the global `become: true`:
+This installation requires Zookeeper; also note that this role requires root access, so either run it in a playbook with a global `become: true`, or invoke the role in your playbook.
 
-```yaml
-- hosts: all
-  become: true
-  roles:
-    - role: bilalcaliskan.kafka
-      vars:
-        simple_role_var: foo
-```
-
-### Role Variables
+## Role Variables
 
 See the default values in [defaults/main.yml](defaults/main.yml). You can overwrite them in [vars/main.yml](vars/main.yml) if neccessary or you can set them while running playbook.
 
 Also please see the Redhat ansible_os_family specific variables in [vars/redhat.yml](vars/redhat.yml) and Debian ansible_os_family specific variables in [vars/debian.yml](vars/debian.yml).
 
-> Please note that this role will ensure that `firewalld` systemd service on your servers are started and enabled by default. If you want to stop and disable `firewalld` service, please modify below variable as false when running playbook:  
-> ```yaml  
+> Please note that this role will ensure that `firewalld` systemd service on your servers are started and enabled by default. If you want to stop and disable `firewalld` service, please modify below variable as false when running playbook:
+> ```yaml
 > firewalld_enabled: false
 
-### Dependencies
+## Dependencies
 
 That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcaliskan/zookeeper) role
 
 
-### Examples
-#### Seperate Zookeeper, Seperate Kafka Installation
+## Examples
+### Seperate Zookeeper, Seperate Kafka Installation
 
-*inventory.ini:*
+***inventory.ini:***
 ```
 [zookeepers]
   zookeepernode01
@@ -56,7 +48,7 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
   brokernode02
 ```
 
-*playbook.yaml:*
+***playbook.yaml:***
 ```yaml
 ---
 
@@ -77,13 +69,13 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
         install_kafka: true
         install_zookeeper: false
         seperate_zookeepers: true
-        zookeepers: 
+        zookeepers:
           - zookeepernode01
 
 ```
 
-#### Seperate Zookeeper, Seperate Kafka Uninstallation
-*inventory.ini:*
+### Seperate Zookeeper, Seperate Kafka Uninstallation
+***inventory.ini:***
 ```
 [zookeepers]
   zookeepernode01
@@ -92,7 +84,7 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
   brokernode02
 ```
 
-*playbook.yaml:*
+***playbook.yaml:***
 ```yaml
 ---
 
@@ -113,14 +105,14 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
         install_kafka: false
         install_zookeeper: false
         seperate_zookeepers: true
-        zookeepers: 
+        zookeepers:
           - zookeepernode01
 
 ```
 
-#### Kafka + Zookeeper on the same server installation
+### Kafka + Zookeeper on the same server installation
 
-*inventory.ini:*
+***inventory.ini:***
 ```
 [brokers]
   brokernode01
@@ -128,7 +120,7 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
   brokernode03
 ```
 
-*playbook.yaml:*
+***playbook.yaml:***
 ```yaml
 ---
 
@@ -143,9 +135,9 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
         seperate_zookeepers: false
 ```
 
-#### Kafka + Zookeeper on the same server uninstallation
+### Kafka + Zookeeper on the same server uninstallation
 
-*inventory.ini:*
+***inventory.ini:***
 ```
 [brokers]
   brokernode01
@@ -153,7 +145,7 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
   brokernode03
 ```
 
-*playbook.yaml:*
+***playbook.yaml:***
 ```yaml
 ---
 
@@ -168,6 +160,12 @@ That role requires [bilalcaliskan.zookeeper](https://galaxy.ansible.com/bilalcal
         seperate_zookeepers: false
 ```
 
-### License
+## Development
+This project requires below tools while developing:
+- [Ansible 2.4 or higher](https://docs.ansible.com/ansible/latest/installation_guide/intro_installation.html)
+- [pre-commit](https://pre-commit.com/)
+- [ansible-lint](https://ansible-lint.readthedocs.io/en/latest/installing.html#using-pip-or-pipx) - required by [pre-commit](https://pre-commit.com/)
+- [Bash shell](https://www.gnu.org/software/bash/) - required by [pre-commit](https://pre-commit.com/)
 
-MIT / BSD
+## License
+Apache License 2.0
