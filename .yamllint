@@ -4,9 +4,13 @@ extends: default
 
 rules:
   line-length:
-    max: 120
+    max: 150
     level: warning
-  new-lines: disable
+    allow-non-breakable-inline-mappings: true
+  truthy:
+    level: warning
+  document-start:
+    level: warning
 
 ignore: |
   .github/stale.yml
