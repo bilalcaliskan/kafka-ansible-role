@@ -1,9 +1,8 @@
 ---
-
 ############# Behavioral Parameters #############
 install_kafka: true
 install_zookeeper: true
-firewalld_enabled: true
+firewalld_enabled: false
 
 
 ############# Installation Specific Parameters #############

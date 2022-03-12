@@ -1,5 +1,4 @@
 ---
-
 - name: Get service facts
   service_facts:
 
@@ -99,14 +98,8 @@
     value: "{{ item.value }}"
     state: present
     reload: true
+  ignore_errors: true
   loop: "{{ os_required_parameters }}"
-
-- name: Stop firewalld if desired by user
-  service:
-    name: firewalld
-    state: stopped
-    enabled: false
-  when: not (firewalld_enabled | bool)
 
 - name: Firewalld related block
   block:

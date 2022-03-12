@@ -1,5 +1,4 @@
 ---
-
 - name: Ensure correct partitions exist on device {{ kafka_device }}
   parted:
     device: "{{ kafka_device }}"

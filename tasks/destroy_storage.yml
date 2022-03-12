@@ -1,5 +1,4 @@
 ---
-
 - name: Ensure logical volume is unmounted
   mount:
     path: "{{ kafka_logical_volume.mount_path }}"
